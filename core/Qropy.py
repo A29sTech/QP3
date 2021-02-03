@@ -2,7 +2,7 @@ from typing import Optional, List
 from PIL import Image, ImageQt
 from PySide2.QtWidgets import QApplication, QWidget, QFrame
 from PySide2.QtCore import Qt, QRect, QPoint, Signal, QSize
-from PySide2.QtGui import QPainter, QPen, QImage
+from PySide2.QtGui import QPainter, QPen, QImage, QColor, QBrush
 from PySide2.QtGui import QMouseEvent, QPaintEvent, QResizeEvent, QKeyEvent
 
 
@@ -176,6 +176,18 @@ class SelectoRect(QWidget):
             self.__painter.setPen(QPen(Qt.red, self.LINE_WIDTH, Qt.DashLine))
             self.__painter.drawRect(self.getMoveHandle)
             self.__painter.drawRect(self.getResizeHandle)
+            # Paint Outsite Of Selection;
+            outside_brush = QBrush(QColor(0, 0, 0, 128))
+            top = QRect(0, 0, self.width(), self.__sRect.y())
+            left = QRect(0, self.__sRect.y(), self.__sRect.x(), self.height())
+            bottom = QRect(self.__sRect.x(), self.__sRect.bottom(), self.width(),
+                           self.height()-self.__sRect.bottom())
+            right = QRect(self.__sRect.right(), self.__sRect.y(
+            ), self.width()-self.__sRect.right(), self.__sRect.height()-1)
+            self.__painter.fillRect(top, outside_brush)
+            self.__painter.fillRect(left, outside_brush)
+            self.__painter.fillRect(bottom, outside_brush)
+            self.__painter.fillRect(right, outside_brush)
 
         self.__painter.end()  # Paint Must End To Avoid Memory Leack;
 
