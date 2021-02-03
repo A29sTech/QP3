@@ -1,6 +1,6 @@
 from typing import Optional, List
 from PIL import Image, ImageQt
-from PySide2.QtWidgets import QWidget, QFrame
+from PySide2.QtWidgets import QApplication, QWidget, QFrame
 from PySide2.QtCore import Qt, QRect, QPoint, Signal, QSize
 from PySide2.QtGui import QPainter, QPen, QImage
 from PySide2.QtGui import QMouseEvent, QPaintEvent, QResizeEvent, QKeyEvent
