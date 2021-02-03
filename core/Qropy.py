@@ -127,21 +127,34 @@ class SelectoRect(QWidget):
 
     def mouseMoveEvent(self, event: QMouseEvent):
         """ Event: Don't Invoke This Method Manually """
+        mpos = event.pos()  # Mouse Position
         if self.__is_selection_enabled or self.__is_resize_enable:
+            # Prevent Selection From Outside Canvas;
+            if mpos.x() > self.width():
+                mpos.setX(self.width())
+            if mpos.y() > self.height():
+                mpos.setY(self.height())
+
             if not self.__ratio:
                 # -> Set Selection Rect's End Position;
-                self.__sRect.setBottomRight(event.pos())
+                self.__sRect.setBottomRight(mpos)
             else:
                 # -> Calclulate & Apply Ratio;
                 #-----------[ Can Be Improve ]-----------#
                 width_as_ratio = round(
                     self.__sRect.height() * self.__ratio)  # Ratio Appled;
                 self.__sRect.setWidth(width_as_ratio)
-                self.__sRect.setBottom(event.y())
+                self.__sRect.setBottom(mpos.y())
 
         elif self.__is_move_enable:
             # -> Move Selection Rect;
-            self.__sRect.moveCenter(event.pos())
+            rectRef = QRect(self.__sRect)
+            rectRef.moveCenter(mpos)
+            if rectRef.x() < 0 or rectRef.right() > self.width():
+                mpos.setX(self.__sRect.center().x())
+            if rectRef.y() < 0 or rectRef.bottom() > self.height():
+                mpos.setY(self.__sRect.center().y())
+            self.__sRect.moveCenter(mpos)
 
         """``````````````````````````````````````````````````"""
         # -> Cursor Pointer Logic;
