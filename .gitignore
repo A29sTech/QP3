@@ -1,0 +1,3 @@
+# Use mypy & autopep8 (if in vs code);
+.vscode
+.mypy_cache
