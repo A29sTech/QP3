@@ -130,7 +130,7 @@ class QWebBrowser(QFrame):
         else:  # Delete Popup Window;
             self.__web_view.deletePopup()
 
-        orginal_filename = os.path.basename(self.__web_page.getInputFile())
+        orginal_filename = os.path.basename(self.__web_page.getInputFile()) + '.png'
 
         if os.path.exists(os.path.join(req.downloadDirectory(), orginal_filename)):
 
@@ -157,7 +157,7 @@ class QWebBrowser(QFrame):
         # Check Reply;
         if reply == QMessageBox.Yes:
             if os.environ.get('PS_PATH', None):
-                os.popen('"{}" "{}"'.format(os.environ['PS_PATH'], path))
+                os.popen('"{}" "{}"'.format(os.environ['PS_PATH'], os.path.realpath(path)))
 
     def resizeEvent(self, event):
         self.__web_view.setFixedSize(self.width(), self.height())
